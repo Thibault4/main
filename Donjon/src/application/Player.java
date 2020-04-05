@@ -7,6 +7,9 @@ public class Player {
 	private int level;
 	private int position;
 	private int health = 100;
+	private boolean alive = true;
+	public int[] wallsMap = new int[Main.w_height * 2];
+	public int[] lavaMap = new int[Main.w_height * 2];
 	//Inventory inventory;
 	
 	public Player(String name, int position) {
@@ -24,23 +27,66 @@ public class Player {
 	}
 	
 	public void moveForward() {//Fonction de déplacement avec leurs valeurs
-		position -= 31;
+		if(canMove(-31)) {
+			position -= 31;
+		}
 	}
 	
 	public void moveBackward() {
-		position += 31;
+		if(canMove(+31)) {
+			position += 31;
+		}
 	}
 	
 	public void moveLeft() {
-		position -= 1;
+		if(canMove(-1)) {
+			position -= 1;
+		}
 	}
 	
 	public void moveRight() {
-		position += 1;
+		if(canMove(+1)) {
+			position += 1;
+		}
 	}
 	
 	public void removeHealth(int damage) {
 		health -= damage;
+		if(health <= 0) {
+			health = 0;
+			System.out.println("Game over");
+			alive = false;
+		}
+	}
+	
+	public boolean canMove(int movementValue) {
+		for (int i = 0; i < wallsMap.length; i++) {
+			if(position + movementValue == wallsMap[i]) {
+				return false;
+			}
+		}
+		
+		for (int i = 0; i < lavaMap.length; i++) {
+			if(position + movementValue == lavaMap[i]) {
+				removeHealth(100);
+				System.out.println("Le joueur est tombé dans la lave");
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public void setWallsMap(int wallsMap[]) {
+		this.wallsMap = wallsMap;
+	}
+	
+	public void setLavaMap(int lavaMap[]) {
+		this.lavaMap = lavaMap;
+	}
+	
+	public boolean isAlive() {
+		return alive;
 	}
 
 	

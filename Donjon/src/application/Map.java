@@ -9,24 +9,20 @@ import javafx.scene.image.ImageView;
 
 public class Map{
 	
-	Player joueur = new Player(null, 0, 0);
 	
 	private String name;
-	private int size;
 	private ArrayList<Node> MetaData = new ArrayList<Node>();
+	Player joueur;
 	
-	public Map(String name, int size) {
+	public Map(String name) {
 		this.name = name;
-		this.size = size;
-		System.out.println("Création d'une nouvelle carte " + name + " de taille " + size + " tuiles");
+		System.out.println("Création d'une nouvelle carte " + name);
 	}
 	
 	public ArrayList<Node> generate(int beginPos, int endPos) {
 		
 		clearMetaData(MetaData);
 		
-		System.out.println("Position du joueur : "  + joueur.getPosition());
-		System.out.println("Lancement de generate");
 	    int deb_ligne = beginPos;
 	    boolean a = false;
 	    
@@ -44,7 +40,7 @@ public class Map{
 	    /*for (int i = 0; i < ((Main.w_width/Main.tile_size-1) * (Main.w_height/Main.tile_size-1)); i++) {
 	    	MetaData.add(new Label("["+i+"]"));
 	    }*/
-	    for (int i = 0; i < ((Main.w_width/Main.tile_size-1) * (Main.w_height/Main.tile_size-1)); i++) { //-1 car on commence a 0 
+	    for (int i = 0; i < ((Main.w_width/Main.tile_size-1) * ((Main.w_height-150)/Main.tile_size-1)); i++) { //-1 car on commence a 0 
 	    	if(i >= beginPos && i <= endPos) {
 	    		
 	    		if(i == LeftPositionWalls) { //detection de la création d'un mur vertical du coté gauche
@@ -72,18 +68,20 @@ public class Map{
 	    		}
 	    		
 	    		
-	    		
-	    		if(i >= WallBeginPosition && i <= WallFinishPosition && i != joueur.getPosition()) { //premiere ligne au top
-	    			MetaData.add(new ImageView(new Image("File:"+selectedWall)));
-	    		}else if(i == joueur.getPosition()) {
-	    			System.out.println("Apparition du personnage en position : " + i);
+	    		if(i == joueur.getPosition() && joueur.isAlive()) {
 	    			MetaData.add(new ImageView(new Image("File:perso_de_dos.png")));
+	    		}else if(i >= WallBeginPosition && i <= WallFinishPosition) { //premiere ligne au top
+	    			MetaData.add(new ImageView(new Image("File:"+selectedWall)));
+	    			if(selectedWall.equalsIgnoreCase("mur1.jpg")) {
+	    				joueur.wallsMap[i] = i;
+	    			}
 	    		}
 	    		
 	    		
 	    		
 	    		if(i < WallBeginPosition || i > WallFinishPosition) {
 	    			MetaData.add(new ImageView(new Image("File:lave.jpg")));
+	    			joueur.lavaMap[i] = i;
 	    		}
 	    		
 	    		if(i == deb_ligne + 30) {
@@ -96,6 +94,7 @@ public class Map{
 	    		
 	    		
 	    	}else {
+	    		joueur.lavaMap[i] = i;
 	    		MetaData.add(new ImageView(new Image("File:lave.jpg")));
 	    	}
 	    }

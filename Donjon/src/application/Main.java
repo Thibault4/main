@@ -2,9 +2,8 @@ package application;
 	
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -15,14 +14,14 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 	
 	public final static int w_width = 800;
-	public final static int w_height = 800;
+	public final static int w_height = 950;
 	public final static int tile_size = 25;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			Player joueur = new Player("Thibault", 4, (681-3-17-30)); //Initialisation du personnage 
-			Map Carte1 = new Map("MaCarte", 54);//Création de la map
+			Map Carte1 = new Map("MaCarte");//Création de la map
 			Carte1.addingPlayerOnMap(joueur);//ajout du personnage sur la carte
 			TilePane terrain = new TilePane();//Création du terrain physique graphique
 			terrain.setPrefSize(tile_size, tile_size);//définition de la taille d'une tuile
@@ -32,7 +31,6 @@ public class Main extends Application {
 			scene.setOnKeyPressed(//détéction d'une appuye sur une touche clavier
 					event -> {
 						if(event.getCode() == KeyCode.UP) {//si la touche est fleche du haut
-							System.out.println("Détéction UP");
 							joueur.moveForward();//avance le personnage
 							terrain.getChildren().clear();//clear le terrain physique
 							terrain.getChildren().addAll(Carte1.generate(93, 896));//actualise le terrain physique
@@ -40,7 +38,6 @@ public class Main extends Application {
 						}
 						
 						if(event.getCode() == KeyCode.RIGHT) {
-							System.out.println("Détéction Right");
 							joueur.moveRight();
 							terrain.getChildren().clear();
 							terrain.getChildren().addAll(Carte1.generate(93, 896));
@@ -48,14 +45,12 @@ public class Main extends Application {
 						}
 						
 						if(event.getCode() == KeyCode.LEFT) {
-							System.out.println("Détéction Left");
 							joueur.moveLeft();
 							terrain.getChildren().clear();
 							terrain.getChildren().addAll(Carte1.generate(93, 896));
 						}
 						
 						if(event.getCode() == KeyCode.DOWN) {
-							System.out.println("Détéction Left");
 							joueur.moveBackward();
 							terrain.getChildren().clear();
 							terrain.getChildren().addAll(Carte1.generate(93, 896));
