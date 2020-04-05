@@ -10,6 +10,7 @@ public class Player {
 	private boolean alive = true;
 	public int[] wallsMap = new int[Main.w_height * 2];
 	public int[] lavaMap = new int[Main.w_height * 2];
+	private int nbTilesLine;
 	//Inventory inventory;
 	
 	public Player(String name, int position) {
@@ -27,14 +28,14 @@ public class Player {
 	}
 	
 	public void moveForward() {//Fonction de déplacement avec leurs valeurs
-		if(canMove(-31)) {
-			position -= 31;
+		if(canMove(-nbTilesLine)) {
+			position -= nbTilesLine;
 		}
 	}
 	
 	public void moveBackward() {
-		if(canMove(+31)) {
-			position += 31;
+		if(canMove(nbTilesLine)) {
+			position += nbTilesLine;
 		}
 	}
 	
@@ -87,6 +88,10 @@ public class Player {
 	
 	public boolean isAlive() {
 		return alive;
+	}
+	
+	public void setTilesLine(int value) {
+		nbTilesLine = value - 1;
 	}
 
 	
